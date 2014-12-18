@@ -17,8 +17,8 @@ public class Pattern {
     }
     
     public void extractFeatures() {
-	//featuresVector.add(new HillClimb_feature(0,0,image.clone()));
-	//featuresVector.add(new HillClimb_feature(1,0,image.clone()));
+	featuresVector.add(new HillClimb_feature(0,0,image.clone()));
+	featuresVector.add(new HillClimb_feature(1,0,image.clone()));
 	featuresVector.add(new CenterOfGravity_feature(image.clone()));
     }
 
