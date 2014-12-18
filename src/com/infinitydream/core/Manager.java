@@ -32,7 +32,7 @@ public class Manager {
 	}
 	
 	double accuracy = truecnt/imagescnt;
-	System.out.println(">"+accuracy);
+	System.out.println(">"+accuracy*100);
 	return accuracy;
     }
 
@@ -52,7 +52,7 @@ public class Manager {
 	System.out.println("plans --------------------------------------");
 	double planaccur = validatePatterns(knnclassifier, FileParser.parseDirectory(plans_testlist_path, ".mat"), "plan");
 	
-	System.out.println("Accuracy "+(caraccur+planaccur)/2);
+	System.out.println("Accuracy "+((caraccur+planaccur)/2)*100+"%");
     }
 
     public static void main(String[] args) throws FileNotFoundException,

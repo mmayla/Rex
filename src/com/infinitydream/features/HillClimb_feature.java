@@ -39,10 +39,6 @@ public class HillClimb_feature extends Feature {
 	featureVector[0] = (double) hcnt;
 	featureVector[1] = (double) lcnt;
 	featureVector[2] = (double) adiff;
-	
-//	System.out.println(hcnt);
-//	System.out.println(lcnt);
-//	System.out.println(adiff);
     }
 
     /**
@@ -74,7 +70,6 @@ public class HillClimb_feature extends Feature {
      * @return no of hills
      */
     private int countHills(Double[] dvector, int startIdx, int endIdx) {
-	// System.out.println("Max: " + endIdx);
 	int hillsCount = 0;
 	boolean increasing = startIdx <= endIdx ? true : false;
 
@@ -87,7 +82,6 @@ public class HillClimb_feature extends Feature {
 		if (newlocal) {
 		    noisecount = 0;
 		    newlocal = false;
-		    // System.out.println("> " + i + " " + data[i]);
 		} else {
 		    noisecount++;
 		}
@@ -95,15 +89,12 @@ public class HillClimb_feature extends Feature {
 		if (noisecount >= noise) {
 		    hillsCount++;
 		    noisecount = 0;
-		    // System.out.println("^");
 		}
 		newlocal = true;
 	    }
 
 	    prevstep = dvector[i];
 	}
-
-	// System.out.println("h: " + hillsCount);
 	return hillsCount;
     }
 

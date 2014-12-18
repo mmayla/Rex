@@ -17,7 +17,7 @@ public class FileParser {
 	return data;
     }
     
-    public static List<double[][]>  parseDirectory(String dirpath,String ext) throws FileNotFoundException, IOException {
+    public static List<double[][]>  parseDirectory(String dirpath,final String ext) throws FileNotFoundException, IOException {
 	List<double[][]> paths = new ArrayList<double[][]>();
 	File dir = new File(dirpath);
 	File [] files = dir.listFiles(new FilenameFilter() {
