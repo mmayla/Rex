@@ -72,7 +72,7 @@ public class HillClimb_feature extends Feature {
      */
     private int countHills(Double[] dvector, int startIdx, int endIdx) {
 	// System.out.println("Max: " + endIdx);
-	int noise = 5;
+	int noise = 3;
 	int hillsCount = 0;
 	boolean increasing = startIdx <= endIdx ? true : false;
 
