@@ -27,7 +27,7 @@ public abstract class Feature {
 	//double[][] data = FileParser.parseMatFile(planpath1);
 	double[][] data = FileParser.parseMatFile(planpath1);
 	
-	HillClimb_feature hcf = new HillClimb_feature(0,data);
+	//HillClimb_feature hcf = new HillClimb_feature(0,7,data);
     }
     
 }

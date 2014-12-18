@@ -16,8 +16,8 @@ public class Pattern {
     }
     
     public void extractFeatures() {
-	featuresVector.add(new HillClimb_feature(0,image.clone()));
-	featuresVector.add(new HillClimb_feature(1,image.clone()));
+	featuresVector.add(new HillClimb_feature(0,7,image.clone()));
+	featuresVector.add(new HillClimb_feature(1,7,image.clone()));
     }
 
     public double[][] getImage() {

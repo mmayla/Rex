@@ -14,15 +14,18 @@ import com.infinitydream.core.Utility;
 public class HillClimb_feature extends Feature {
 
     private final int dimension;
-
-    public HillClimb_feature(int dimension, double[][] image) {
+    private int noise;
+    
+    public HillClimb_feature(int dimension, int noise, double[][] image) {
 	super("Hill Climb (" + (dimension == 0 ? "X" : "Y") + ") feature", 3,image);
 
 	if (dimension < 0 || dimension > 1)
 	    throw new IllegalArgumentException("Dimension must be 0 or 1");
 
 	this.dimension = dimension;
+	this.noise = noise;
 	extractFeature(image);
+	
     }
 
     @Override
@@ -72,7 +75,7 @@ public class HillClimb_feature extends Feature {
      */
     private int countHills(Double[] dvector, int startIdx, int endIdx) {
 	// System.out.println("Max: " + endIdx);
-	int noise = 3;
+	int noise = 0;
 	int hillsCount = 0;
 	boolean increasing = startIdx <= endIdx ? true : false;
 

@@ -19,12 +19,21 @@ public class Manager {
 	}
     }
 
-    private static void testPatterns(Classifier classif, List<double[][]> images) {
+    private static double validatePatterns(Classifier classif, List<double[][]> images, String expected) {
+	int truecnt = 0;
+	double imagescnt = images.size();
 	for (double[][] image : images) {
 	    Pattern patt = new Pattern(image);
 	    patt.extractFeatures();
-	    System.out.println(classif.classify(patt));
+	    String belongto = classif.classify(patt);
+	    if(belongto.equals(expected))
+		truecnt++;
+	    System.out.println(belongto);
 	}
+	
+	double accuracy = truecnt/imagescnt;
+	System.out.println(">"+accuracy);
+	return accuracy;
     }
 
     public static void run() throws FileNotFoundException, IOException {
@@ -33,16 +42,17 @@ public class Manager {
 	String cars_testlist_path = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/test_data_car/";
 	String plans_testlist_path = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/test_data_plan/";
 	
-	KNN_classifier knnclassifier = new KNN_classifier(7);
+	KNN_classifier knnclassifier = new KNN_classifier(13);
 	train(knnclassifier, "car",
 		FileParser.parseDirectory(carlist_path, ".mat"));
 	train(knnclassifier, "plan",
 		FileParser.parseDirectory(planlist_path, ".mat"));
 	System.out.println("cars --------------------------------------");
-	testPatterns(knnclassifier, FileParser.parseDirectory(cars_testlist_path, ".mat"));
+	double caraccur = validatePatterns(knnclassifier, FileParser.parseDirectory(cars_testlist_path, ".mat"), "car");
 	System.out.println("plans --------------------------------------");
-	testPatterns(knnclassifier, FileParser.parseDirectory(plans_testlist_path, ".mat"));
-
+	double planaccur = validatePatterns(knnclassifier, FileParser.parseDirectory(plans_testlist_path, ".mat"), "plan");
+	
+	System.out.println("Accuracy "+(caraccur+planaccur)/2);
     }
 
     public static void main(String[] args) throws FileNotFoundException,
