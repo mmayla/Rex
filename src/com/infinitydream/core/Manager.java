@@ -42,7 +42,7 @@ public class Manager {
 	String cars_testlist_path = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/test_data_car/";
 	String plans_testlist_path = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/test_data_plan/";
 	
-	KNN_classifier knnclassifier = new KNN_classifier(13);
+	KNN_classifier knnclassifier = new KNN_classifier(5);
 	train(knnclassifier, "car",
 		FileParser.parseDirectory(carlist_path, ".mat"));
 	train(knnclassifier, "plan",

@@ -1,5 +1,9 @@
 package com.infinitydream.core;
 
+import java.util.Collection;
+
+import javax.management.MXBean;
+
 public class Utility {
     /**
      * 
@@ -48,10 +52,38 @@ public class Utility {
 	    vector[i]=value;
     }
     
-    public static void main(String[] args) {
-	Integer[] x = {1,4,6,8,0,19,23,5};
-	int[] n = {1,4,6,8,0,19,23,5};
+    /**
+     * 
+     * @param dvector
+     * @return the value at index 0 represent the min value in dvector
+     * and at the index 1 represent the max value
+     */
+    public static Double[] getMiniMax (Double[] dvector) {
+	Double[] minimax = new Double[2];
+	minimax[0] = dvector[0]; //min
+	minimax[1] = dvector[0]; //max
 	
+	for(int i=0;i<dvector.length;i++) {
+	    if(dvector[i]>minimax[1])
+		minimax[1] = dvector[i];
+	    if(dvector[i]<minimax[0])
+		minimax[0] = dvector[i];
+	}
+	
+	return minimax;
+    }
+    
+    public static Double[] premArrayToDouble(double[] parray) {
+	Double[] carray = new Double[parray.length];
+	for(int i=0;i<parray.length;i++) {
+	    carray[i] = parray[i];
+	}
+	
+	return carray;
+    }
+    
+    public static void main(String[] args) {
+	double[] x = {1,4,6,8,0,19,23,5};
 	//System.out.println(max);
     }
 }
