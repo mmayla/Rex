@@ -38,7 +38,7 @@ public class Manager {
 	return accuracy;
     }
 
-    public static void run_validation1(String trscript, String valscript)
+    public static String run_validation1(String trscript, String valscript)
 	    throws FileNotFoundException, IOException {
 
 	List<String> trainingPaths = FileParser.parseScriptFile(trscript);
@@ -68,10 +68,12 @@ public class Manager {
 
 	System.out.println("Accuracy "
 		+ ((accuracy / (validationPaths.size() / 2)) * 100 + "%"));
+	return "nothing";
     }
 
-    private static void run_validation2(String trscript, String valscript)
+    public static String run_validation2(String trscript, String valscript)
 	    throws IOException {
+	String resultsStr = "";
 	List<String> trainingPaths = FileParser.parseScriptFile(trscript);
 	List<String> validationlabels = FileParser.parseScriptFile(valscript);
 
@@ -93,6 +95,7 @@ public class Manager {
 	    Pattern pattern = new Pattern(images.get(i-1));
 	    pattern.extractFeatures();
 	    String belongto = knnclassifier.classify(pattern);
+	    resultsStr += belongto+"\n"; //file content
 	    System.out.println(belongto);
 	    if(belongto.equals(expected))
 		accuracy++;
@@ -100,6 +103,8 @@ public class Manager {
 	
 	accuracy /= images.size();
 	System.out.println("Accuracy "+accuracy*100+"%");
+	
+	return resultsStr;
     }
 
     public static void main(String[] args) throws FileNotFoundException,

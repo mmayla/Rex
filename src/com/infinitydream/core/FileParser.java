@@ -2,6 +2,7 @@ package com.infinitydream.core;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,19 +16,21 @@ import com.jmatio.types.MLArray;
 import com.jmatio.types.MLDouble;
 
 public class FileParser {
-    public static double[][] parseMatFile(String path) throws FileNotFoundException, IOException {
+    public static double[][] parseMatFile(String path)
+	    throws FileNotFoundException, IOException {
 	MatFileReader fr = new MatFileReader(path);
-	double[][] data = ((MLDouble)fr.getMLArray( "x" )).getArray();
+	double[][] data = ((MLDouble) fr.getMLArray("x")).getArray();
 	return data;
     }
-    
-    public static List<double[][]>  parseDirectory(String dirpath,final String ext) throws FileNotFoundException, IOException {
+
+    public static List<double[][]> parseDirectory(String dirpath,
+	    final String ext) throws FileNotFoundException, IOException {
 	List<double[][]> paths = new ArrayList<double[][]>();
 	File dir = new File(dirpath);
-	File [] files = dir.listFiles(new FilenameFilter() {
+	File[] files = dir.listFiles(new FilenameFilter() {
 	    @Override
 	    public boolean accept(File dir, String name) {
-	        return name.endsWith(ext);
+		return name.endsWith(ext);
 	    }
 	});
 
@@ -36,28 +39,39 @@ public class FileParser {
 	    String pth = xmlfile.toString();
 	    filepaths.add(pth);
 	}
-	
+
 	Collections.sort(filepaths);
-	
-	for(String path : filepaths) {
+
+	for (String path : filepaths) {
 	    paths.add(parseMatFile(path));
 	}
-	
+
 	return paths;
     }
-    
-    public static List<String> parseScriptFile(String fpath) throws FileNotFoundException {
+
+    public static List<String> parseScriptFile(String fpath)
+	    throws FileNotFoundException {
 	List<String> paths = new ArrayList<String>();
 	Scanner sc = new Scanner(new File(fpath));
-	while(sc.hasNextLine()) {
+	while (sc.hasNextLine()) {
 	    paths.add(sc.nextLine().trim());
 	}
 	return paths;
     }
-    
-    public static void main(String[] args) throws FileNotFoundException, IOException {
-	String dpath = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/testlabels.mat";
-	
+
+    public static void write(String outPath, String content) throws IOException {
+	File rfile = new File(outPath);
+	rfile.createNewFile();
+	FileWriter fw = new FileWriter(rfile);
+
+	fw.write(content);
+	fw.close();
     }
-    
+
+    public static void main(String[] args) throws FileNotFoundException,
+	    IOException {
+	String dpath = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/testlabels.mat";
+
+    }
+
 }
