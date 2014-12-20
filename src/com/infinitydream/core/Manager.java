@@ -14,50 +14,105 @@ public class Manager {
 
 	for (double[][] image : images) {
 	    Pattern patt = new Pattern(image);
+	    patt.setBelongTo(classname);
 	    patt.extractFeatures();
 	    classif.train(classname, patt);
 	}
     }
 
-    private static double validatePatterns(Classifier classif, List<double[][]> images, String expected) {
+    private static double validatePatterns(Classifier classif,
+	    List<double[][]> images, String expected) {
 	int truecnt = 0;
 	double imagescnt = images.size();
 	for (double[][] image : images) {
 	    Pattern patt = new Pattern(image);
 	    patt.extractFeatures();
 	    String belongto = classif.classify(patt);
-	    if(belongto.equals(expected))
+	    if (belongto.equals(expected))
 		truecnt++;
 	    System.out.println(belongto);
 	}
-	
-	double accuracy = truecnt/imagescnt;
-	System.out.println(">"+accuracy*100);
+
+	double accuracy = truecnt / imagescnt;
+	System.out.println(">" + accuracy * 100);
 	return accuracy;
     }
 
-    public static void run() throws FileNotFoundException, IOException {
-	String carlist_path = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/car_data/";
-	String planlist_path = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/plane_data/";
-	String cars_testlist_path = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/test_data_car/";
-	String plans_testlist_path = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/test_data_plan/";
-	
+    public static void run_validation1(String trscript, String valscript)
+	    throws FileNotFoundException, IOException {
+
+	List<String> trainingPaths = FileParser.parseScriptFile(trscript);
+	List<String> validationPaths = FileParser.parseScriptFile(valscript);
+
 	KNN_classifier knnclassifier = new KNN_classifier(5);
-	train(knnclassifier, "car",
-		FileParser.parseDirectory(carlist_path, ".mat"));
-	train(knnclassifier, "plan",
-		FileParser.parseDirectory(planlist_path, ".mat"));
-	System.out.println("cars --------------------------------------");
-	double caraccur = validatePatterns(knnclassifier, FileParser.parseDirectory(cars_testlist_path, ".mat"), "car");
-	System.out.println("plans --------------------------------------");
-	double planaccur = validatePatterns(knnclassifier, FileParser.parseDirectory(plans_testlist_path, ".mat"), "plan");
+
+	// trainig
+	for (int i = 0; i < trainingPaths.size(); i += 2) {
+	    String label = trainingPaths.get(i);
+	    String cpath = trainingPaths.get(i + 1);
+	    train(knnclassifier, label,
+		    FileParser.parseDirectory(cpath, ".mat"));
+	}
+
+	// validation
+	double accuracy = 0;
+	for (int i = 0; i < validationPaths.size(); i += 2) {
+	    //
+	    String expectedlabel = validationPaths.get(i);
+	    String cpath = validationPaths.get(i + 1);
+	    System.out.println("------------- " + expectedlabel
+		    + " -------------");
+	    accuracy += validatePatterns(knnclassifier,
+		    FileParser.parseDirectory(cpath, ".mat"), expectedlabel);
+	}
+
+	System.out.println("Accuracy "
+		+ ((accuracy / (validationPaths.size() / 2)) * 100 + "%"));
+    }
+
+    private static void run_validation2(String trscript, String valscript)
+	    throws IOException {
+	List<String> trainingPaths = FileParser.parseScriptFile(trscript);
+	List<String> validationlabels = FileParser.parseScriptFile(valscript);
+
+	KNN_classifier knnclassifier = new KNN_classifier(5);
+
+	// trainig
+	for (int i = 0; i < trainingPaths.size(); i += 2) {
+	    String label = trainingPaths.get(i);
+	    String cpath = trainingPaths.get(i + 1);
+	    train(knnclassifier, label,
+		    FileParser.parseDirectory(cpath, ".mat"));
+	}
 	
-	System.out.println("Accuracy "+((caraccur+planaccur)/2)*100+"%");
+	// validation
+	double accuracy = 0;
+	List<double[][]> images = FileParser.parseDirectory(validationlabels.get(0), ".mat");
+	for (int i = 1; i < validationlabels.size(); i ++) {
+	    String expected = validationlabels.get(i);
+	    Pattern pattern = new Pattern(images.get(i-1));
+	    pattern.extractFeatures();
+	    String belongto = knnclassifier.classify(pattern);
+	    System.out.println(belongto);
+	    if(belongto.equals(expected))
+		accuracy++;
+	}
+	
+	accuracy /= images.size();
+	System.out.println("Accuracy "+accuracy*100+"%");
     }
 
     public static void main(String[] args) throws FileNotFoundException,
 	    IOException {
-	run();
+	// String trscript =
+	// "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/training_script";
+	// String valscript =
+	// "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data/validation_script";
+	// run_validation1(trscript,valscript);
+
+	String trscript = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data 2/training_script";
+	String valscript = "/home/divoo/workspace/4th_year_workspace/Pattern_Project/Training data 2/validation_script";
+	run_validation2(trscript, valscript);
     }
 
 }
